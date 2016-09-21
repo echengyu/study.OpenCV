@@ -8,18 +8,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".CameraActivity" >
-
-    <!-- <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" /> -->
 	
 	<org.opencv.android.JavaCameraView
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 		android:visibility="gone"
 		android:id="@+id/HellpOpenCvView"
-		opencv:show_fps="true"
+		opencv:show_fps="false"
 		opencv:camera_id="any" />
 
 </LinearLayout>
