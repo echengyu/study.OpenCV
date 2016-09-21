@@ -119,7 +119,11 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 	public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 		mRgba = inputFrame.rgba();
 		mGray = inputFrame.gray();
-		Mat cannyMat = new Mat();
+		
+		// 目前螢幕解析度
+		int rows = (int) inputFrame.rgba().size().height;
+        int cols = (int) inputFrame.rgba().size().width;       
+        Log.e("sizeRgba", "("+rows+", "+cols+")");
 		
 		// 二值化
 		Imgproc.cvtColor(mRgba, mRgba, Imgproc.COLOR_RGBA2GRAY, 0);
@@ -156,9 +160,9 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
         	}
         }
 		
-		Log.e("lines.cols()", String.valueOf(lines.cols()));
-		Log.e("points1", points1.toString());
-		Log.e("points2", points2.toString());		
+//		Log.e("lines.cols()", String.valueOf(lines.cols()));
+//		Log.e("points1", points1.toString());
+//		Log.e("points2", points2.toString());		
 		
 		if(points1.size() != 0 && points2.size() != 0){			
 			if(Math.abs(points1.get(0).x - points2.get(0).x) > (points2.get(0).x / 5)){
