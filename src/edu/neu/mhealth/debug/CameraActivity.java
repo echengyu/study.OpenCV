@@ -121,9 +121,9 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 		mGray = inputFrame.gray();
 		
 		// 目前螢幕解析度
-		int rows = (int) inputFrame.rgba().size().height;
-        int cols = (int) inputFrame.rgba().size().width;       
-        Log.e("sizeRgba", "("+rows+", "+cols+")");
+//		int rows = (int) inputFrame.rgba().size().height;
+//        int cols = (int) inputFrame.rgba().size().width;       
+//        Log.e("sizeRgba", "("+rows+", "+cols+")");
 		
 		// 二值化
 		Imgproc.cvtColor(mRgba, mRgba, Imgproc.COLOR_RGBA2GRAY, 0);
