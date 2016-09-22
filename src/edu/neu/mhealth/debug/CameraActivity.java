@@ -18,22 +18,23 @@ import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
 
-import edu.neu.mhealth.debug.helper.Global;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 
 public class CameraActivity extends Activity implements CvCameraViewListener2 {
 
-	/*Basic Variables*/
-	private final String TAG = Global.APP_LOG_TAG;
 
+	protected static final String TAG = "why?";
 	private List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 	private Mat hierarchy;
 	private Mat mIntermediateMat;
@@ -68,9 +69,9 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 		setContentView(R.layout.activity_camera);
 		mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.HellpOpenCvView);
 		mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
-		mOpenCvCameraView.setCvCameraViewListener(this);
+		mOpenCvCameraView.setCvCameraViewListener(this);		        
 	}
-	
+    
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -171,25 +172,29 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 //	        mDetector.setHsvColor(mBlobColorHsv);
 	        	        
 	        
-//	        //For each contour found
-//	        approxCurve = new MatOfPoint2f();
-//	        for (int i=0; i<contours.size(); i++)
-//	        {
-//	            //Convert contours(i) from MatOfPoint to MatOfPoint2f
-//	            MatOfPoint2f contour2f = new MatOfPoint2f( contours.get(i).toArray() );
-//	            //Processing on mMOP2f1 which is in type MatOfPoint2f
-//	            double approxDistance = Imgproc.arcLength(contour2f, true)*0.02;
-//	            Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
-//
-//	            //Convert back to MatOfPoint
-//	            MatOfPoint points = new MatOfPoint( approxCurve.toArray() );
-//
-//	            // Get bounding rect of contour
-//	            Rect rect = Imgproc.boundingRect(points);
-//
-//	             // draw enclosing rectangle (all same color, but you could use variable i to make them unique)
+	        //For each contour found
+	        approxCurve = new MatOfPoint2f();
+	        for (int i=0; i<contours.size(); i++)
+	        {
+	            //Convert contours(i) from MatOfPoint to MatOfPoint2f
+	            MatOfPoint2f contour2f = new MatOfPoint2f( contours.get(i).toArray() );	            
+//	            Log.e("contour2f", contour2f.toString());
+	            
+	            //Processing on mMOP2f1 which is in type MatOfPoint2f
+	            double approxDistance = Imgproc.arcLength(contour2f, true)*0.02;
+	            Log.e("approxDistance", String.valueOf(approxDistance));
+	            
+	            Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
+
+	            //Convert back to MatOfPoint
+	            MatOfPoint points = new MatOfPoint( approxCurve.toArray() );
+
+	            // Get bounding rect of contour
+	            Rect rect = Imgproc.boundingRect(points);
+
+	             // draw enclosing rectangle (all same color, but you could use variable i to make them unique)
 //	            Core.rectangle(mRgba, new Point(rect.x,rect.y), new Point(rect.x+rect.width,rect.y+rect.height), new Scalar(0, 255, 0, 255), 2); 
-//	        }
+	        }
 	        
 //			List<Moments> mu = new ArrayList<Moments>(contours.size());
 //		    for (int i = 0; i < contours.size(); i++) {
@@ -202,12 +207,12 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 //		    };
 
 			
-			for(int i=0; i<contours.size(); i++){				
-				int rows = (int) contours.get(i).size().height + 20;
-		        int cols = (int) contours.get(i).size().width + 60;       
-		        Log.e("sizeRgba", "("+rows+", "+cols+")");
-		        Core.putText(mRgba, String.valueOf(i+1), new Point(rows, cols), 1, 1, new Scalar(255, 255, 0, 255), 2);
-			}
+//			for(int i=0; i<contours.size(); i++){				
+//				int rows = (int) contours.get(i).size().height + 20;
+//		        int cols = (int) contours.get(i).size().width + 60;       
+//		        Log.e("sizeRgba", "("+rows+", "+cols+")");
+//		        Core.putText(mRgba, String.valueOf(i+1), new Point(rows, cols), 1, 1, new Scalar(255, 255, 0, 255), 2);
+//			}
 			
 		}else{
 			Core.trace(inputFrame.rgba());
