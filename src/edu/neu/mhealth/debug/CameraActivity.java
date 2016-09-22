@@ -37,6 +37,7 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 	private List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
 	private Mat hierarchy;
 	private Mat mIntermediateMat;
+	private MatOfPoint2f approxCurve;
 
 	/*OpenCv Variables*/
 	private Mat mRgba;
@@ -138,8 +139,58 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 //		Imgproc.drawContours(inputFrame.rgba(), contours, -1, new Scalar(255, 127, 63, 255));
 		
 		if(contours.size() != 0 &&contours.size() < 500){
-			Imgproc.drawContours(inputFrame.rgba(), contours, -1, new Scalar(255, 255, 0, 255));
 			
+			// 劃出輪廓線
+			Imgproc.drawContours(inputFrame.rgba(), contours, -1, new Scalar(255, 255, 0, 255));
+
+//	        Rect touchedRect = new Rect();
+//	        Scalar mBlobColorRgba = new Scalar(255);
+//
+//	        touchedRect.x = 10;
+//	        touchedRect.y = 10;
+//
+//	        touchedRect.width = 100;
+//	        touchedRect.height = 100;
+//
+//	        Mat touchedRegionRgba = mRgba.submat(touchedRect);
+//
+//	        Mat touchedRegionHsv = new Mat();
+//	        Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
+//
+//	        // Calculate average color of touched region
+//	        Scalar mBlobColorHsv = Core.sumElems(touchedRegionHsv);
+//	        int pointCount = touchedRect.width*touchedRect.height;
+//	        for (int i = 0; i < mBlobColorHsv.val.length; i++)
+//	            mBlobColorHsv.val[i] /= pointCount;
+//
+//	        mBlobColorRgba = converScalarHsv2Rgba(mBlobColorHsv);
+//
+//	        Log.i(TAG, "Touched rgba color: (" + mBlobColorRgba.val[0] + ", " + mBlobColorRgba.val[1] +
+//	                ", " + mBlobColorRgba.val[2] + ", " + mBlobColorRgba.val[3] + ")");
+//
+//	        mDetector.setHsvColor(mBlobColorHsv);
+	        	        
+	        
+//	        //For each contour found
+//	        approxCurve = new MatOfPoint2f();
+//	        for (int i=0; i<contours.size(); i++)
+//	        {
+//	            //Convert contours(i) from MatOfPoint to MatOfPoint2f
+//	            MatOfPoint2f contour2f = new MatOfPoint2f( contours.get(i).toArray() );
+//	            //Processing on mMOP2f1 which is in type MatOfPoint2f
+//	            double approxDistance = Imgproc.arcLength(contour2f, true)*0.02;
+//	            Imgproc.approxPolyDP(contour2f, approxCurve, approxDistance, true);
+//
+//	            //Convert back to MatOfPoint
+//	            MatOfPoint points = new MatOfPoint( approxCurve.toArray() );
+//
+//	            // Get bounding rect of contour
+//	            Rect rect = Imgproc.boundingRect(points);
+//
+//	             // draw enclosing rectangle (all same color, but you could use variable i to make them unique)
+//	            Core.rectangle(mRgba, new Point(rect.x,rect.y), new Point(rect.x+rect.width,rect.y+rect.height), new Scalar(0, 255, 0, 255), 2); 
+//	        }
+	        
 //			List<Moments> mu = new ArrayList<Moments>(contours.size());
 //		    for (int i = 0; i < contours.size(); i++) {
 //		        mu.add(i, Imgproc.moments(contours.get(i), false));
@@ -147,45 +198,17 @@ public class CameraActivity extends Activity implements CvCameraViewListener2 {
 //		        int x = (int) (p.get_m10() / p.get_m00());
 //		        int y = (int) (p.get_m01() / p.get_m00());
 //		        Log.e("sizeRgba", "("+x+", "+y+")");
-//		        Core.putText(mRgba, String.valueOf(i), new Point(x, y), 1, 1, new Scalar(0, 255, 0, 255), 2);
+//		        Core.putText(mRgba, String.valueOf(i+1), new Point(x, y), 1, 1, new Scalar(255, 127, 0, 255), 2);
 //		    };
-			
-	        Rect touchedRect = new Rect();
-	        Scalar mBlobColorRgba = new Scalar(255);
-
-	        touchedRect.x = 10;
-	        touchedRect.y = 10;
-
-	        touchedRect.width = 100;
-	        touchedRect.height = 100;
-
-	        Mat touchedRegionRgba = mRgba.submat(touchedRect);
-
-	        Mat touchedRegionHsv = new Mat();
-	        Imgproc.cvtColor(touchedRegionRgba, touchedRegionHsv, Imgproc.COLOR_RGB2HSV_FULL);
-
-	        // Calculate average color of touched region
-	        Scalar mBlobColorHsv = Core.sumElems(touchedRegionHsv);
-	        int pointCount = touchedRect.width*touchedRect.height;
-	        for (int i = 0; i < mBlobColorHsv.val.length; i++)
-	            mBlobColorHsv.val[i] /= pointCount;
-
-	        mBlobColorRgba = converScalarHsv2Rgba(mBlobColorHsv);
-
-	        Log.i(TAG, "Touched rgba color: (" + mBlobColorRgba.val[0] + ", " + mBlobColorRgba.val[1] +
-	                ", " + mBlobColorRgba.val[2] + ", " + mBlobColorRgba.val[3] + ")");
-
-//	        mDetector.setHsvColor(mBlobColorHsv);
-
-			
 
 			
 			for(int i=0; i<contours.size(); i++){				
 				int rows = (int) contours.get(i).size().height + 20;
 		        int cols = (int) contours.get(i).size().width + 60;       
 		        Log.e("sizeRgba", "("+rows+", "+cols+")");
-		        Core.putText(mRgba, String.valueOf(contours.size()), new Point(rows, cols), 1, 1, new Scalar(255, 255, 0, 255), 2);
+		        Core.putText(mRgba, String.valueOf(i+1), new Point(rows, cols), 1, 1, new Scalar(255, 255, 0, 255), 2);
 			}
+			
 		}else{
 			Core.trace(inputFrame.rgba());
 		}
